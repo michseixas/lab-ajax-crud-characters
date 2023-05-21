@@ -1,8 +1,8 @@
-const charactersAPI = new APIHandler('http://localhost:3000');
+const fakeAPIChars = new APIHandler('http://localhost:8000');
 
 window.addEventListener('load', () => {
 	document.getElementById('fetch-all').addEventListener('click', function() {
-		charactersAPI.getFullList().then((infoCharacter) => {
+		fakeAPIChars.getFullList().then((infoCharacter) => {
 			const parentDiv = document.querySelector('.characters-container');
 			const hiddenDivOnFetch = document.getElementById('character-info-to-hide');
 
@@ -55,14 +55,14 @@ window.addEventListener('load', () => {
 		});
 	});
 
-  document.getElementById('fetch-one').addEventListener('click', function() {
+	document.getElementById('fetch-one').addEventListener('click', function() {
 		const parentDiv = document.querySelector('.characters-container');
 		const userInputId = document.querySelector('.operation input').value;
 		let oneChar = document.createElement('div');
 		const charIdInput = document.getElementById('character-id-input-one');
 		parentDiv.innerHTML = '';
 
-		charactersAPI.getOneRegister(userInputId).then((infoCharacter) => {
+		fakeAPIChars.getOneRegister(userInputId).then((infoCharacter) => {
 			oneChar.className = 'character-info';
 			const newDivCharacter = document.createElement('div');
 			newDivCharacter.classList = 'id';
@@ -107,13 +107,17 @@ window.addEventListener('load', () => {
 			parentDiv.appendChild(oneChar);
 			charIdInput.style.backgroundColor = 'green';
 		});
+		// Always returning something, so dunno how to print in red
+		// .catch(() => {
+		// 	charIdInput.style.backgroundColor = 'red';
+		// });
 	});
 
-
-  document.getElementById('delete-one').addEventListener('click', function() {
+	document.getElementById('delete-one').addEventListener('click', function() {
 		const userInputId = document.querySelector('.delete input').value;
 		const btnDelete = document.getElementById('character-id-delete');
-		charactersAPI.deleteOneRegister(userInputId).then(() => (btnDelete.style.backgroundColor = 'green'));
+
+		fakeAPIChars.deleteOneRegister(userInputId).then(() => (btnDelete.style.backgroundColor = 'green'));
 	});
 
 	document.getElementById('edit-character-form').addEventListener('submit', () => {
@@ -130,20 +134,24 @@ window.addEventListener('load', () => {
 			cartoon
 		};
 
-		charactersAPI.updateOneRegister(id, updatedCharacter).then(() => {});
+		fakeAPIChars.updateOneRegister(id, updatedCharacter).then(() => {});
 	});
 
-  document.getElementById('new-character-form').addEventListener('submit', function() {
+	document.getElementById('new-character-form').addEventListener('submit', function() {
+		// Like we did in the cart lab
 		const newCharsValue = document.getElementById('new-character-form').elements;
+		// Values of the inputs
 		const name = newCharsValue.name.value;
 		const occupation = newCharsValue.occupation.value;
 		const cartoon = newCharsValue.cartoon.checked;
 		const weapon = newCharsValue.weapon.value;
+		// Values of the new character
 		const newChar = { name, occupation, weapon, cartoon };
 
-		charactersAPI.createOneRegister(newChar);
+		fakeAPIChars.createOneRegister(newChar);
 	});
 
+	// Adding a clear button to remove stuff
 	document.getElementById('clear').addEventListener('click', function() {
 		window.location.reload();
 	});
